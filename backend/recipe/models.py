@@ -38,7 +38,6 @@ class Ingredient(models.Model):
     )
     measurement_unit = models.PositiveIntegerField(
         verbose_name="Единицы измерения",
-        max_length=200,
     )
 
     class Meta:
@@ -65,14 +64,15 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        verbose_name="ингридиенты рецепта",
         related_name="recipes",
-        through="RecipeIngredientAmount",
+        verbose_name="ингридиенты рецепта",
+        through="IngredientUnits",
     )
     tags = models.ForeignKey(
         Tag,
         verbose_name="Теги рецепта",
         related_name="recipes",
+        on_delete=models.CASCADE,
     )
     cooking_time = models.PositiveIntegerField(
         verbose_name="Время приготовления",
@@ -91,18 +91,20 @@ class Recipe(models.Model):
     )
 
 
-class RecipeIngredientAmount(models.Model):
+class IngredientUnits(models.Model):
     """Модель связи рецепта и ингридиентов с указанием количества последних"""
 
     recipe = models.ForeignKey(
         Recipe,
         verbose_name="Рецепт",
-        related_name="ingredients",
+        related_name="ingredient",
+        on_delete=models.CASCADE,
     )
-    ingredient = models.ForeignKey(
+    ingredients = models.ForeignKey(
         Ingredient,
         verbose_name="Ингредиенты входящие в рецепт",
-        related_name="recipes",
+        related_name="recipe",
+        on_delete=models.CASCADE,
     )
     amount = models.PositiveIntegerField(
         verbose_name="Количество",
@@ -143,7 +145,7 @@ class Favorite(models.Model):
         verbose_name_plural = "Избранные рецепты"
         constraints = (
             models.UniqueConstraint(
-                fields=("user", "titrecipele"),
+                fields=("user", "recipe"),
                 name="unique_favorite_recipe",
             ),
         )
