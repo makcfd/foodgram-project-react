@@ -32,12 +32,15 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
+    """Модель ингридиентов"""
+
     name = models.CharField(
         verbose_name="Ингридиент",
         max_length=200,
     )
-    measurement_unit = models.PositiveIntegerField(
+    measurement_unit = models.CharField(
         verbose_name="Единицы измерения",
+        max_length=200,
     )
 
     class Meta:
