@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
 from django.db import models
 
 User = get_user_model()
@@ -18,17 +19,17 @@ class Tag(models.Model):
         verbose_name="Slug тега",
         max_length=200,
         unique=True,
-        null=False,
+        null=True,
     )
     color = models.CharField(
         verbose_name="Цвет тега",
         max_length=7,
-        unique=True,
-        null=False,
+        null=True,
+        blank=True,
     )
 
     def __str__(self) -> str:
-        return super().name
+        return self.name
 
 
 class Ingredient(models.Model):
@@ -71,21 +72,23 @@ class Recipe(models.Model):
         verbose_name="ингридиенты рецепта",
         through="IngredientUnits",
     )
-    tags = models.ForeignKey(
+    tags = models.ManyToManyField(
         Tag,
         verbose_name="Теги рецепта",
         related_name="recipes",
-        on_delete=models.CASCADE,
+        # on_delete=models.CASCADE,
     )
     cooking_time = models.PositiveIntegerField(
         verbose_name="Время приготовления",
         null=False,
+        validators=[MinValueValidator(1.0)],
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="recipes",
         verbose_name="Автор",
+        null=True,
     )
     pub_date = models.DateTimeField(
         verbose_name="Дата публикации рецепта",

@@ -54,30 +54,31 @@ class IngridientsSerializer(serializers.ModelSerializer):
         )
 
 
-class RecipeSerializer(serializers.ModelSerializer):
-    """Сериализатор рецептов"""
+class RecipeSerializerRead(serializers.ModelSerializer):
+    """Сериализатор рецептов для retrieve и list actions"""
 
     tags = TagSerializer(
+        # source="tag.pk",
         many=True,
         read_only=True,
     )
-    author = UserSerializer(read_only=True)
+    # # author = UserSerializer(read_only=True)
     ingredients = serializers.SerializerMethodField()
-    is_favoured = serializers.SerializerMethodField()
-    is_in_shopping_cart = serializers.SerializerMethodField()
-    image = Base64ImageField()
+    # is_favoured = serializers.SerializerMethodField()
+    # is_in_shopping_cart = serializers.SerializerMethodField()
+    # image = Base64ImageField()
 
     class Meta:
         model = Recipe
         fields = (
             "id",
             "tags",
-            "author",
+            # "author",
             "ingredients",
-            "is_favoured",
-            "is_in_shopping_cart",
+            # "is_favoured",
+            # "is_in_shopping_cart",
             "name",
-            "image",
+            # "image",
             "text",
             "cooking_time",
         )
@@ -85,3 +86,47 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_ingredients(self, obj):
         ingredients = obj.ingredients.all()
         return ingredients
+
+
+class RecipeSerializerWrite(serializers.ModelSerializer):
+    """Сериализатор рецептов"""
+
+    tags = TagSerializer(
+        # source="id",
+        many=True,
+        read_only=False,
+    )
+    # tags = serializers.PrimaryKeyRelatedField(
+    #     queryset=Tag.objects.all(), many=True
+    # )
+    # author = UserSerializer(read_only=True)
+    ingredients = serializers.SerializerMethodField()
+    # is_favoured = serializers.SerializerMethodField()
+    # is_in_shopping_cart = serializers.SerializerMethodField()
+    # image = Base64ImageField()
+
+    class Meta:
+        model = Recipe
+        fields = (
+            "id",
+            "tags",
+            # "author",
+            "ingredients",
+            # "is_favoured",
+            # "is_in_shopping_cart",
+            "name",
+            # "image",
+            "text",
+            "cooking_time",
+        )
+
+    def get_ingredients(self, obj):
+        ingredients = obj.ingredients.all()
+        return ingredients
+
+    def create(self, validated_data):
+        recipe = Recipe.objects.create(**validated_data)
+        tags_data = self.initial_data.pop("tags")
+        recipe.tags.set(tags_data)
+
+        return recipe
