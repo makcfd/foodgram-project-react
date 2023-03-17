@@ -17,3 +17,12 @@ RecipeSerializerWrite(
     name = CharField(label='Наименование блюда', max_length=200)
     text = CharField(label='Описание блюда', style={'base_template': 'textarea.html'})
     cooking_time = IntegerField(label='Время приготовления', min_value=1.0)
+
+
+{
+  "username": "pupkin",
+  "password": "admin123!",
+  "first_name": "Вася",
+  "last_name": "Пупкин",
+  "email": "vpupkin@yandex.ru"
+}
