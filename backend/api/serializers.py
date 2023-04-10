@@ -26,12 +26,7 @@ class Base64ImageField(serializers.ImageField):
         if isinstance(data, str) and data.startswith("data:image"):
             format, imgstr = data.split(";base64,")
             ext = format.split("/")[-1]
-            # Затем декодировать сами данные и поместить результат в файл,
-            # которому дать название по шаблону.
-            # TODO: передать имя рецепта для сохранения файла
-            # проверить что в data есть имя
             data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
         return super().to_internal_value(data)
 
 
@@ -60,9 +55,7 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
-        if user.is_anonymous:
-            return False
-        return Subscribe.objects.filter(user=user, author=obj).exists()
+        return user.is_anonymous and Subscribe.objects.filter(user=user, author=obj).exists()
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -133,19 +126,14 @@ class RecipeSerializerRead(serializers.ModelSerializer):
 
     def get_is_favoured(self, obj):
         request = self.context.get("request")
-        if not request or request.user.is_anonymous:
-            return False
-        return obj.favorited.filter(user=request.user).exists()
+        return obj.favorited.filter(user=request.user).exists() and not request.user.is_anonymous
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get("request")
-        if not request or request.user.is_anonymous:
-            return False
-        return obj.in_shopping_cart.filter(user=request.user).exists()
+        return obj.in_shopping_cart.filter(user=request.user).exists() and not request.user.is_anonymous
 
     def get_ingredients(self, obj):
-        recipe = obj
-        ingredients = recipe.ingredients.values(
+        ingredients = obj.ingredients.values(
             "id",
             "name",
             "measurement_unit",
@@ -204,22 +192,6 @@ class RecipeSerializerWrite(serializers.ModelSerializer):
         request = self.context.get("request")
         context = {"request": request}
         return RecipeSerializerRead(instance, context=context).data
-
-
-# class FavoriteSerializer(serializers.ModelSerializer):
-#     id = serializers.IntegerField(source="recipe.id")
-#     name = serializers.CharField(source="recipe.name")
-#     image = serializers.ImageField(source="recipe.image")
-#     cooking_time = serializers.IntegerField(source="recipe.cooking_time")
-
-#     class Meta:
-#         model = Favorite
-#         fields = (
-#             "id",
-#             "name",
-#             "image",
-#             "cooking_time",
-#         )
 
 
 class RecipeFavoriteAndShopping(serializers.ModelSerializer):
