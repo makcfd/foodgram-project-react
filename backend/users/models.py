@@ -2,10 +2,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db.models import UniqueConstraint
-
+from users.customfields import LowercaseEmailField
 
 class User(AbstractUser):
     """Кастомизированная модель пользователя."""
+    email = LowercaseEmailField(
+        'Email',
+        unique=True,)
 
     first_name = models.CharField(
         verbose_name="Имя", max_length=150, blank=False
