@@ -167,7 +167,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://*",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    ("http://*"),
-    ("https://*"),
+    ("http://*localhost"),
+    ("https://*localhost"),
     ("http://127.0.0.1:8000/"),
     ]
