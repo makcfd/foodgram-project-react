@@ -31,6 +31,18 @@ class Base64ImageField(serializers.ImageField):
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
+    
+    def create(self, validated_data):
+        user = User(
+            email=validated_data['email'],
+            username=validated_data['username'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+    
     class Meta:
         model = User
         fields = tuple(User.REQUIRED_FIELDS) + (
@@ -42,6 +54,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
     #     "email",
     #     "password",
     # )
+    
 
 class CustomUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField(read_only=True)
