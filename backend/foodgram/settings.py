@@ -164,12 +164,30 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
+# DJOSER = {
+#     "PERMISSIONS": {
+#         "user": ("rest_framework.permissions.IsAuthenticated",),
+#         "user_list": ("rest_framework.permissions.AllowAny",),
+#     }
+# }
+
 DJOSER = {
-    "PERMISSIONS": {
-        "user": ("rest_framework.permissions.IsAuthenticated",),
-        "user_list": ("rest_framework.permissions.AllowAny",),
-    }
+    'LOGIN_FIELD': 'email',
+    'SERIALIZERS': {
+        'user': 'api.serializers.CustomUserSerializer',
+        'current_user': 'api.serializers.CustomUserSerializer',
+        'user_create': 'api.serializers.CustomUserCreateSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ('rest_framework.permissions.IsAuthenticated',),
+        'user_list': ('rest_framework.permissions.AllowAny',),
+    },
+    'HIDE_USERS': False,
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
 }
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r"^/api/.*$"
