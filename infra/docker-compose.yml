@@ -21,8 +21,8 @@ services:
 
   frontend:
     image: makcfd/frontend:latest
-    volumes:
-      - ../frontend/build:/app/build/
+    # volumes:
+    #   - ../frontend/build:/app/build/
     depends_on:
       - backend
 
