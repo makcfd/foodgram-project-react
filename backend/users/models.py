@@ -28,7 +28,7 @@ class User(AbstractUser):
             "unique": "Пользователь уже существует",
         },
     )
-
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = (
         "first_name",
         "last_name",
