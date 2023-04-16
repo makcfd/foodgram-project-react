@@ -14,7 +14,7 @@ from recipe.models import (
     Recipe,
     Ingredient,
     IngredientUnits,
-)
+) 
 from users.models import Subscribe
 
 
@@ -35,9 +35,13 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         model = User
         fields = tuple(User.REQUIRED_FIELDS) + (
             User.USERNAME_FIELD,
-            "password",
         )
-
+    # REQUIRED_FIELDS = (
+    #     "first_name",
+    #     "last_name",
+    #     "email",
+    #     "password",
+    # )
 
 class CustomUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField(read_only=True)
