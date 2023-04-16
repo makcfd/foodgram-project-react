@@ -1,11 +1,6 @@
 version: '3.3'
 services:
 
-  frontend:
-    image: makcfd/frontend:latest
-    volumes:
-      - ../frontend/:/app/result_build/
-
   db:
     image: postgres:13.0-alpine
     volumes:
@@ -24,6 +19,13 @@ services:
     env_file:
       - ./.env
 
+  frontend:
+    image: makcfd/frontend:latest
+    volumes:
+      - ../frontend/build:/app/build/
+    depends_on:
+      - backend
+
   nginx:
     image: nginx:1.19.3
     ports:
@@ -35,7 +37,7 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
-      - backend
+      - frontend
 
 volumes:
   data:
