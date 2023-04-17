@@ -66,8 +66,11 @@ class CustomUserSerializer(UserSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        user = self.context.get("request").user
-        return user.is_anonymous and Subscribe.objects.filter(user=user, author=obj).exists()
+        if self.context.get('request') and (
+            not self.context['request'].user.is_anonymous):
+            user = self.context.get("request").user
+            return Subscribe.objects.filter(user=user, author=obj).exists()
+        return False
 
 
 class TagSerializer(serializers.ModelSerializer):
