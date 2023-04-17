@@ -13,7 +13,7 @@ class Command(BaseCommand):
     """
 
     DEFAULT_PATH_TO_DATA = (
-        "/Users/fedius/Documents/Dev/foodgram-project-react/data/"
+        "/home/partos/foodgram-project-react/data/"
     )
 
     def add_arguments(self, parser):
