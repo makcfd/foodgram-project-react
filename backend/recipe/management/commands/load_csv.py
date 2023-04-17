@@ -13,7 +13,7 @@ class Command(BaseCommand):
     """
 
     DEFAULT_PATH_TO_DATA = (
-        "/home/partos/foodgram-project-react/data/"
+        None
     )
 
     def add_arguments(self, parser):
@@ -34,7 +34,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         docname = options["docname"]
-        path = self.DEFAULT_PATH_TO_DATA + docname + ".csv"
+        if self.DEFAULT_PATH_TO_DATA is None:
+            path = docname + ".csv"
+        else:
+            path = self.DEFAULT_PATH_TO_DATA + docname + ".csv"
         with open(path, newline="") as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             num_objects = self._category_bulk_create(reader=reader)
