@@ -33,6 +33,7 @@ class User(AbstractUser):
         "first_name",
         "last_name",
         "password",
+        "username",
     )
 
     class Meta:
