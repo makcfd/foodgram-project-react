@@ -5,6 +5,7 @@ from django.db.models import F
 
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.core.files.base import ContentFile
+from django.shortcuts import get_list_or_404
 
 from rest_framework.fields import IntegerField
 from rest_framework import serializers
@@ -225,3 +226,51 @@ class RecipeFavoriteAndShopping(serializers.ModelSerializer):
             "image",
             "cooking_time",
         )
+
+class RecipeSubsribe(serializers.ModelSerializer):
+    """Сериализатор рецептов для подписок."""
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(read_only=True)
+    image = serializers.ImageField(read_only=True)
+    cooking_time = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Recipe
+        fields = (
+            "id",
+            "name",
+            "image",
+            "cooking_time",
+        )
+
+class SubscribeSerializer(serializers.ModelSerializer):
+    """Сериализатор для подписок."""
+    recipes = serializers.SerializerMethodField()
+    
+    id = serializers.IntegerField(source='author.id')
+    email = serializers.EmailField(source='author.email')
+    username = serializers.CharField(source='author.username')
+    first_name = serializers.CharField(source='author.first_name')
+    last_name = serializers.CharField(source='author.last_name')
+    recipes_count = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'id', 'username',
+                  'first_name', 'last_name',
+                  'is_subscribed',
+                  'recipes', 'recipes_count')
+        
+    def get_recipes(self, obj):
+        """Возвращает список рецептов в подписках."""
+        recipes = get_list_or_404(Recipe, author=obj.author)
+        serializer = RecipeSubsribe(recipes, many=True, read_only=True)
+        return serializer.data
+    
+    def get_recipes_count(self, obj):
+        return Recipe.objects.filter(author=obj.author).count()
+
+    def get_is_subscribed(self, obj):
+        return Subscribe.objects.filter(user=obj.user,
+                                           author=obj.author).exists()

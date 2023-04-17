@@ -124,7 +124,7 @@ class IngredientUnits(models.Model):
 
 class Favorite(models.Model):
     """Модель избранных рецептов, связь рецепта и пользователя."""
-
+ 
     recipe = models.ForeignKey(
         Recipe,
         verbose_name="Любимый рецепт",
