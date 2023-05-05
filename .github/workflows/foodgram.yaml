@@ -118,7 +118,6 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend
             sudo docker-compose stop
-            sudo docker-compose rm backend
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
