@@ -106,7 +106,7 @@ jobs:
       - build_and_push_backend_to_docker_hub
       - build_and_push_frontend_to_docker_hub
     steps:
-      - name: executing remote ssh commands to deploy
+      - name: executing remote ssh command to deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -114,28 +114,34 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            ls
-            cd infra
-            ls
-            sudo rm -f .env        
-            sudo touch .env
-            sudo chmod 666 .env
-            
-            sudo echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-            sudo echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-            sudo echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-            sudo echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-            sudo echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-            sudo echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            
-            sudo docker compose stop
-            
-            sudo docker compose rm backend
-            sudo docker compose pull backend
-            sudo docker compose rm frontend
-            sudo docker compose pull frontend
-            
-            sudo docker compose up -d --build
+            ls -la
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: 
+  #     - build_and_push_backend_to_docker_hub
+  #     - build_and_push_frontend_to_docker_hub
+  #   steps:
+  #     - name: executing remote ssh commands to deploy
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USER }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         passphrase: ${{ secrets.PASSPHRASE }}
+  #         script: |
+  #           cd infra
+  #           sudo docker-compose down
+  #           sudo docker pull pashkavrn/foodgram_frontend:latest
+  #           sudo docker pull pashkavrn/foodgram_backend:latest
+  #           touch .env
+  #           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+  #           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+  #           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+  #           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+  #           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+  #           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+  #           sudo docker-compose up -d
 
   send_final_message:
     runs-on: ubuntu-latest
