@@ -22,7 +22,7 @@ services:
   frontend:
     image: makcfd/frontend:latest
     volumes:
-      - ../frontend/build:/app/build/
+      - ../frontend/:/app/result_build/
     depends_on:
       - backend
 
@@ -37,7 +37,7 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
-      - frontend
+      - frontends
 
 volumes:
   data:
