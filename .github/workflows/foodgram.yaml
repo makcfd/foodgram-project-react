@@ -114,10 +114,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            sudo docker-compose stop
             sudo docker system prune -a -f
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend
-            sudo docker-compose stop
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -127,9 +127,9 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose up -d
-            sudo docker compose exec backend python manage.py makemigrations
-            sudo docker compose exec backend python manage.py migrate
-            sudo docker compose exec backend python manage.py collectstatic --noinput
+            sudo docker-compose exec -T backend python manage.py makemigrations
+            sudo docker-compose exec -T backend python manage.py migrate
+            sudo docker-compose exec -T backend python manage.py collectstatic --no-input
 
   send_final_message:
     runs-on: ubuntu-latest
