@@ -63,14 +63,14 @@ class UsersViewSet(UserViewSet):
         return Response({'message': 'Вы успешно отписаны'},
                         status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post', 'delete'],
+    @action(detail=True, methods=['POST', 'DELETE'],
             permission_classes=[IsAuthenticated])
     def subscribe(self, serializer, id):
         if self.request.method == 'DELETE':
             return self.unsubscribed(serializer, id)
         return self.subscribed(serializer, id)
 
-    @action(detail=False, methods=['get'],
+    @action(detail=False, methods=['GET'],
             permission_classes=[IsAuthenticated])
     def subscriptions(self, serializer):
         Subscriptioning = Subscribe.objects.filter(user=self.request.user)
