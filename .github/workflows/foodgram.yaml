@@ -119,7 +119,8 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo docker-compose stop
-            sudo docker system prune -a -f
+            sudo docker-compose rm backend
+            sudo docker-compose rm frontend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend
             rm .env
