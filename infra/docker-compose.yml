@@ -9,8 +9,7 @@ services:
       - ./.env
 
   backend:
-    image: makcfd/backend:latest
-    #platform: linux/x86_64
+    image: makcfd/backend2:latest
     platform: linux/amd64
     restart: always
     volumes:
