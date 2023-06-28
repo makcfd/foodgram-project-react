@@ -10,7 +10,7 @@ class IngredientFilter(FilterSet):
         model = Ingredient
         fields = ("name",)
 
- 
+
 class RecipeFilter(FilterSet):
     tags = filters.ModelMultipleChoiceFilter(
         field_name="tags__slug",

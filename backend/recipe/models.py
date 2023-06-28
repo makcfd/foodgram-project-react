@@ -71,6 +71,7 @@ class Recipe(models.Model):
         Ingredient,
         verbose_name="ингридиенты рецепта",
         through="IngredientUnits",
+        related_name='recipes',
     )
     tags = models.ManyToManyField(
         Tag,
@@ -124,7 +125,7 @@ class IngredientUnits(models.Model):
 
 class Favorite(models.Model):
     """Модель избранных рецептов, связь рецепта и пользователя."""
- 
+
     recipe = models.ForeignKey(
         Recipe,
         verbose_name="Любимый рецепт",

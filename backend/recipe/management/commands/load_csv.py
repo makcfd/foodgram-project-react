@@ -1,6 +1,5 @@
 import csv
 from django.core.management.base import BaseCommand, CommandError
-from rest_framework.generics import get_object_or_404
 from recipe.models import Ingredient
 
 

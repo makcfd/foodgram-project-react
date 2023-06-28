@@ -52,14 +52,14 @@ class UsersViewSet(UserViewSet):
             return Response({'message': 'Нельзя подписаться на себя'},
                             status=status.HTTP_400_BAD_REQUEST)
         Subscription = Subscribe.objects.get_or_create(user=self.request.user,
-                                              author=Subscriptioner)
+                                                       author=Subscriptioner)
         serializer = SubscribeSerializer(Subscription[0])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def unsubscribed(self, serializer, id=None):
         Subscriptioner = get_object_or_404(User, id=id)
         Subscribe.objects.filter(user=self.request.user,
-                                    author=Subscriptioner).delete()
+                                 author=Subscriptioner).delete()
         return Response({'message': 'Вы успешно отписаны'},
                         status=status.HTTP_200_OK)
 
@@ -77,7 +77,7 @@ class UsersViewSet(UserViewSet):
         pages = self.paginate_queryset(Subscriptioning)
         serializer = SubscribeSerializer(pages, many=True)
         return self.get_paginated_response(serializer.data)
-    
+
 
 class TagViewSet(ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
@@ -145,7 +145,7 @@ class RecipeViewSet(ModelViewSet):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
             obj.delete()
-            return Response({"message": 
+            return Response({"message":
                              "Рецепт успешно удален."},
                             status=status.HTTP_204_NO_CONTENT)
         return Response({"errors": "Рецепт уже удален!"},
