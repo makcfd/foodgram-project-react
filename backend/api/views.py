@@ -21,7 +21,6 @@ from api.serializers import (
     RecipeFavoriteAndShopping,
     SubscribeSerializer,
 )
-from api.viewsets import CreateDeleteViewSet
 from api.filters import IngredientFilter, RecipeFilter
 from recipe.models import (
     Tag,
@@ -152,7 +151,10 @@ class RecipeViewSet(ModelViewSet):
                         status=status.HTTP_400_BAD_REQUEST)
 
 
-    @action(detail=False, permission_classes=(IsAuthenticated,))
+    @action(
+        detail=False,
+        permission_classes=(IsAuthenticated,)
+    )
     def download_shopping_cart(self, request):
         user = request.user
         ingredients = (

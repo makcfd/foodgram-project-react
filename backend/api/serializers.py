@@ -68,8 +68,8 @@ class CustomUserSerializer(UserSerializer):
     def get_is_subscribed(self, obj):
         if self.context.get('request') and (
                 not self.context['request'].user.is_anonymous):
-                    user = self.context.get("request").user
-                    return Subscribe.objects.filter(user=user, author=obj).exists()
+                user = self.context.get("request").user
+                return Subscribe.objects.filter(user=user, author=obj).exists()
         return False
 
 
@@ -141,12 +141,12 @@ class RecipeSerializerRead(serializers.ModelSerializer):
 
     def get_is_favoured(self, obj):
         request = self.context.get("request")
-        return (obj.favorited.filter(user=request.user).exists() 
+        return (obj.favorited.filter(user=request.user).exists()
                 and not request.user.is_anonymous)
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get("request")
-        return (obj.in_shopping_cart.filter(user=request.user).exists() 
+        return (obj.in_shopping_cart.filter(user=request.user).exists()
                 and not request.user.is_anonymous)
 
     def get_ingredients(self, obj):
@@ -253,7 +253,7 @@ class RecipeSubsribe(serializers.ModelSerializer):
 class SubscribeSerializer(serializers.ModelSerializer):
     """Сериализатор для подписок."""
     recipes = serializers.SerializerMethodField()
-    
+
     id = serializers.IntegerField(source='author.id')
     email = serializers.EmailField(source='author.email')
     username = serializers.CharField(source='author.username')
@@ -280,4 +280,4 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         return Subscribe.objects.filter(user=obj.user,
-                                           author=obj.author).exists()
+                                        author=obj.author).exists()
