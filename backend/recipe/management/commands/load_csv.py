@@ -11,12 +11,13 @@ class Command(BaseCommand):
         ingredients
     """
 
-    DEFAULT_PATH_TO_DATA = (
-        "/Users/fedius/Documents/Dev/foodgram-project-react/data/"
+    path = (
+        "."
     )
 
     def add_arguments(self, parser):
         parser.add_argument("--docname", type=str)
+        parser.add_argument("--path", type=str)
 
     def _category_bulk_create(self, reader):
         bulk_list = list()
@@ -33,10 +34,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         docname = options["docname"]
-        if self.DEFAULT_PATH_TO_DATA is None:
+        path_passed = options["path"]
+        if path_passed is None:
             path = docname + ".csv"
         else:
-            path = self.DEFAULT_PATH_TO_DATA + docname + ".csv"
+            path = path_passed + docname + ".csv"
         with open(path, newline="") as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             num_objects = self._category_bulk_create(reader=reader)
