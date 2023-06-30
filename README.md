@@ -79,7 +79,7 @@ sudo docker compose exec backend python manage.py loaddata dump.json
 
 ## Пример проекта развернутого на сервере
 - Url:
-http://158.160.72.24/
+http://62.84.121.103/
 
 - Credentials:
 login: admin@admin.com
