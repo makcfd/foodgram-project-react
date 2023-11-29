@@ -10,7 +10,13 @@
 # Project "Food Helper" - Foodgram
 
 ## Description
-On this service, users can publish recipes, subscribe to the publications of other users, add their favorite recipes to the “Favorites” list, and before going to the store, download a consolidated list of products needed to prepare one or more selected dishes.
+"Foodgram" is a website where you can publish your own recipes, add other users’ recipes to your favorites, subscribe to authors, and create a shopping list for the meals you choose to make.
+Here's what I did during my work on the project:
+- configured interaction of a Python application with third-party API services
+- created a custom API service based on the Django project
+- connected SPA to the back end on Django via API
+- created Docker images and launched containers
+- created multi-container applications, deployed and launched on the server
 
 ## Start the project
 
