@@ -7,7 +7,7 @@
 [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 [![Django-app workflow](https://github.com/makcfd/foodgram-project-react/actions/workflows/foodgram.yaml/badge.svg)](https://github.com/makcfd/foodgram-project-react/actions/workflows/foodgram.yaml)
 
-# ПProject "Food Helper" - Foodgram
+# Project "Food Helper" - Foodgram
 
 ## Description
 On this service, users can publish recipes, subscribe to the publications of other users, add their favorite recipes to the “Favorites” list, and before going to the store, download a consolidated list of products needed to prepare one or more selected dishes.
