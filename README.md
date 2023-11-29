@@ -7,44 +7,44 @@
 [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 [![Django-app workflow](https://github.com/makcfd/foodgram-project-react/actions/workflows/foodgram.yaml/badge.svg)](https://github.com/makcfd/foodgram-project-react/actions/workflows/foodgram.yaml)
 
-# Проект "Продуктовый помощник" - Foodgram
+# ПProject "Food Helper" - Foodgram
 
-## Описание
-На этом сервисе пользователи могут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
+## Description
+On this service, users can publish recipes, subscribe to the publications of other users, add their favorite recipes to the “Favorites” list, and before going to the store, download a consolidated list of products needed to prepare one or more selected dishes.
 
-## Подготовка и запуск проекта
+## Start the project
 
-- Зайти на сервер:
+- Server login:
 ```
 ssh <server user>@<server IP>
 ```
 
-- Клонировать репозиторий:
+- Clone repo:
 ```
 git clone git@github.com:makcfd/foodgram-project-react.git
 ```
 
-- Установить Docker на сервер:
+- Install Docker on server:
 ```
 sudo apt install docker.io
 ```
-- Установить Docker Compose (for Linux):
+- Install Docker Compose (for Linux):
 ```
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 ```
-- Выдать разрешения на команду docker-compose:
+- Persmissions docker-compose:
 ```
 sudo chmod +x /usr/local/bin/docker-compose
 ```
-- Перейти в папку infra клонированного репозитория:
+- Open infra folder:
 ```
 cd foodgram-project-react/infra
 ```
-- Созднать env-file:
+- Create env-file:
 ```
 touch .env
 ```
-- В созданный файл добавить следующую информацию:
+- Add info for DB:
 ```
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
@@ -53,31 +53,31 @@ POSTGRES_PASSWORD=postgres
 DB_HOST=db
 DB_PORT=5432
 ```
-- Скачиваем образы:
+- Get docker images:
 ```
 sudo docker pull makcfd/backend
 sudo docker pull makcfd/frontend
 ```
-- Запускаем:
+- Launch:
 ```
 sudo docker-compose up -d
 ```
-- Делаем миграции:
+- Initiate migrations in Django:
 ```
 sudo docker-compose exec -T backend python manage.py makemigrations
 sudo docker-compose exec -T backend python manage.py migrate
 ```
-- Собираем статику:
+- Get static files:
 ```
 sudo docker-compose exec -T backend python manage.py collectstatic --no-input
 ```
-- Загружаем данные, при необходимости:
+- Load initial data:
 ```
 sudo docker compose cp /home/< your user name >/foodgram-project-react/data/dump.json backend:/app/dump.json
 sudo docker compose exec backend python manage.py loaddata dump.json
 ```
 
-## Пример проекта развернутого на сервере
+## Runnig project example
 - Url:
 http://62.84.121.103/
 
